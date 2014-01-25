@@ -4,62 +4,76 @@ using System.Collections.Generic;
 
 public class ShopKeeperSpeach : MonoBehaviour {
 	private Customer curCustumer;
-	private List<Item> servecedItems=new List<Item>();
-	private List<Talk> talkVariations=new List<Talk>();
 	private string[] talkTextCached;
-	void Initialization()
-	{
-		servecedItems.Clear();
-	}
-	void AddItem(Item item)
-	{
-		servecedItems.Add(item);
-	}
-	
+
+	private List<TalkNode> nodes= new List<TalkNode>();
+	private TalkNode activeNode;
 	void GenerateTalkVariations()
 	{
-		List<ThemeTalk> allThemes = new List<ThemeTalk>();
-		allThemes.Add (ThemeTalk.health);
-		allThemes.Add (ThemeTalk.joke);
-		allThemes.Add (ThemeTalk.sport);
-		allThemes.Add (ThemeTalk.weather);
-		allThemes.Add (ThemeTalk.politic);
-		allThemes.Add (ThemeTalk.none);
 		
-		talkVariations.Clear();
-		Talk talk;
-		foreach (ThemeTalk theme in allThemes)
+		if (nodes.Count==0)
 		{
-			talk=new Talk();
-			talk.themeTalk=theme;
-			
-			talk.text=TalkDatabase.Instance.GetText(theme);
-			if (theme==ThemeTalk.joke)
+			nodes=GetAllNodes(curCustumer.talks);
+		}else{
+			foreach (int next in activeNode.nextElement)
 			{
-				float rnd= Random.Range	(0f,1f);
-				if (rnd>0.8f && servecedItems.Count>0 )
-				{
-					int index = Random.Range(0,servecedItems.Count);
-					talk.text=servecedItems[index].GetRandomeJoke();
-				}
+				Debug.Log (next);
 			}
-			talkVariations.Add(talk);
+			nodes=GetAllNodes(activeNode.myTree,activeNode.nextElement);
 		}
-		CacheText(talkVariations);
+		CacheText(nodes);
 	}
 	
-	void CacheText(List<Talk> talks)
+	List<TalkNode> GetAllNodes(List<TalkTree> trees)
 	{
-		talkTextCached= new string[talks.Count];
-		for (int i=0; i<talks.Count; i++)
+		List<TalkNode> newNodes= new List<TalkNode>();
+		foreach (TalkTree tree in trees)
 		{
-			talkTextCached[i]=talks[i].text;
+			newNodes.AddRange( GetAllNodes(tree,-1));
+		}
+		return newNodes;
+	}
+	
+	List<TalkNode> GetAllNodes(TalkTree tree, int previousElement)
+	{
+		List<TalkNode> newNodes= new List<TalkNode>();
+		foreach (TalkNode node in tree.talkTree)
+		{
+			if (node.previousElement==previousElement)
+			{
+				newNodes.Add(node);
+			}
+		}
+		return newNodes;
+	}
+	List<TalkNode> GetAllNodes(TalkTree tree, List<int> elements)
+	{
+		if (elements.Count==0)
+		{
+			showGrid=false;
+			Debug.Log("stoped talking");
+		}
+		List<TalkNode> newNodes= new List<TalkNode>();
+		
+		foreach (int element in elements)
+		{
+			newNodes.Add(tree.talkTree[element]);
+		}
+		return newNodes;
+	}
+	
+	void CacheText(List<TalkNode> listNodes)
+	{
+		talkTextCached= new string[listNodes.Count];
+		for (int i=0; i<listNodes.Count; i++)
+		{
+			talkTextCached[i]=listNodes[i].text;
 		}
 	}
 	// Use this for initialization
 	void Start () {
 		curCustumer=PoolScript.Instance.GetNextCustumer();
-		GenerateTalkVariations();
+		
 	}
 	
 	// Update is called once per frame
@@ -76,18 +90,22 @@ public class ShopKeeperSpeach : MonoBehaviour {
 			if (selGridInt!=-1)
 			{
 				TalkToCustumer(selGridInt);
-				showGrid=false;
 				selGridInt=-1;
 			}
 		}else{
-			if (GUI.Button(new Rect(25,25,100,30),"talk"))
+			if (GUI.Button(new Rect(25,25,100,30),"talk")){
+				GenerateTalkVariations();
 				showGrid=true;
+			}
 		}
     }
 	
 	void TalkToCustumer (int indexTalk)
 	{
-		PoolScript.Instance.servesing.RecieveTalk(talkVariations[indexTalk]);
+		activeNode=nodes[indexTalk];
+		Debug.Log("Shopkeeper: "+activeNode.text);
+		Debug.Log("Customer: "+activeNode.response);
+		GenerateTalkVariations();
 	}
 	
 }

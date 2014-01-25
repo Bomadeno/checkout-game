@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class Item : MonoBehaviour {
 	
-	public List<string> jokes= new List<string>();
+	public TalkTree talkTree;
 	// Use this for initialization
 	void Start () {
 	
@@ -14,10 +14,4 @@ public class Item : MonoBehaviour {
 	
 	}
 	
-	public string GetRandomeJoke()
-	{
-		if (jokes.Count==0) return string.Empty;
-		int index=Random.Range(0, jokes.Count);
-		return jokes[index];		
-	}
 }
