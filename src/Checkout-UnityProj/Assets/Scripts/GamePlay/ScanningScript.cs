@@ -23,7 +23,8 @@ public class ScanningScript : MonoBehaviour {
 			if(!ScannedItem.IsScanned)
 			{
 				ScannedItem.FinishScan();
-				ConveyorBelt.Instance.SpawnItem();
+				//ConveyorBelt.Instance.SpawnItem();
+				ConveyorBelt.Instance.SpawnBasketItem();
 			}
 		}
 	}

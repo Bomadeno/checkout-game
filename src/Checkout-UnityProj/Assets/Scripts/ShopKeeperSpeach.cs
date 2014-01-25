@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ShopKeeperSpeach : MonoBehaviour {
+	public AudioSource mySource;
 	private Customer curCustumer;
 	private string[] talkTextCached;
 
 	private List<TalkNode> nodes= new List<TalkNode>();
 	private TalkNode activeNode;
+	private bool showTalkButtons=false ;
 	void GenerateTalkVariations()
 	{
 		
@@ -15,10 +17,6 @@ public class ShopKeeperSpeach : MonoBehaviour {
 		{
 			nodes=GetAllNodes(curCustumer.talks);
 		}else{
-			foreach (int next in activeNode.nextElement)
-			{
-				Debug.Log (next);
-			}
 			nodes=GetAllNodes(activeNode.myTree,activeNode.nextElement);
 		}
 		CacheText(nodes);
@@ -72,10 +70,14 @@ public class ShopKeeperSpeach : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		curCustumer=PoolScript.Instance.GetNextCustumer();
-		
+		GetNewCustomer();
 	}
-	
+	public void GetNewCustomer()
+	{
+		curCustumer=PoolScript.Instance.GetNextCustumer();
+		curCustumer.Initilization();
+		showTalkButtons=true;
+	}
 	// Update is called once per frame
 	void Update () {
 	
@@ -84,12 +86,13 @@ public class ShopKeeperSpeach : MonoBehaviour {
     private int selGridInt = -1;
 	private bool showGrid=false;
     void OnGUI() {
+		if (!showTalkButtons) return;
 		if (showGrid)
 		{
 			selGridInt = GUI.SelectionGrid(new Rect(25, 25, 100, 300), selGridInt, talkTextCached, 1);
 			if (selGridInt!=-1)
 			{
-				TalkToCustumer(selGridInt);
+				StartCoroutine(TalkToCustumer(selGridInt));
 				selGridInt=-1;
 			}
 		}else{
@@ -100,12 +103,23 @@ public class ShopKeeperSpeach : MonoBehaviour {
 		}
     }
 	
-	void TalkToCustumer (int indexTalk)
+	IEnumerator TalkToCustumer (int indexTalk)
 	{
+		showTalkButtons=false;
 		activeNode=nodes[indexTalk];
 		Debug.Log("Shopkeeper: "+activeNode.text);
+		mySource.clip=activeNode.audioText;
+		mySource.Play();
+		if (mySource.clip!=null) yield return new WaitForSeconds (activeNode.audioText.length);
 		Debug.Log("Customer: "+activeNode.response);
+		mySource.clip=activeNode.audioResponse;
+		mySource.Play();		
+		if (mySource.clip!=null) yield return new WaitForSeconds (activeNode.audioResponse.length);
+		
+		showTalkButtons=true;
 		GenerateTalkVariations();
 	}
+	
+	
 	
 }

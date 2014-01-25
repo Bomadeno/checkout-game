@@ -40,13 +40,50 @@ public class TalkTree{
 public class Customer : MonoBehaviour {
 	
 	public TalkTree talkTree= new TalkTree();
-	public List<Item> bascket= new List<Item>();
+	[HideInInspector]public List<Item> bascket= new List<Item>();
+	public List<Item> listItemsBascket= new List<Item>();
 	
 	[HideInInspector]public List<TalkTree> talks = new List<TalkTree>();
 	// Use this for initialization
 	void Start () {
+	}
+	public void Initilization()
+	{
+		FillBasket();
 		FillTalks();
 		FillNextElements();
+	}
+	void FillBasket()
+	{
+		float sumW=0;
+		float[] cumArr=new float[listItemsBascket.Count+1];
+		cumArr[0]=0f;
+		for( int i =0; i < listItemsBascket.Count;i++)
+		{
+			sumW+=listItemsBascket[i].weight;
+			cumArr[i+1]=sumW;
+		}
+		
+		int itemAmount=Random.Range(1,6);
+		
+		for (int i=0;i<itemAmount;i++)
+		{
+			float itemIndex=Random.Range(0f,sumW);
+			for (int j=0;j<listItemsBascket.Count;j++)
+			{
+				if ((cumArr[j]<=itemIndex)&&(itemIndex<cumArr[j+1])) 
+				{
+					bascket.Add(listItemsBascket[j]);
+					break;
+				}
+			}
+		}
+		
+		foreach (Item item in bascket)
+		{
+			ConveyorBelt.Instance.basket.Add(item.gameObject);
+		}
+		ConveyorBelt.Instance.SpawnBasketItem();
 	}
 	void FillNextElements()
 	{
