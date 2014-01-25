@@ -2,15 +2,26 @@
 using System.Collections;
 
 public class ConveyorBelt : MonoBehaviour {
-	
-	public GameObject ItemPrefab;
+	private static ConveyorBelt instance;
+
+	public static ConveyorBelt Instance {
+		get {
+			return instance;
+		}
+		set {
+			instance = value;
+		}
+	}
+
+	public GameObject[] ItemPrefabs;
 
 	void Start() {
+		instance = this;
 		SpawnItem();
 
 	}
 
-	void SpawnItem(){
-		GameObject.Instantiate(ItemPrefab, transform.position, transform.rotation);
+	public void SpawnItem(){
+		GameObject.Instantiate(ItemPrefabs[Random.Range(0, ItemPrefabs.Length)], transform.position, transform.rotation);
 	}
 }

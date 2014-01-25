@@ -13,32 +13,36 @@ public class MoveItem : MonoBehaviour {
 	void FinishScan(){
 		currentState=ItemState.Scanned;
 		ScanningScript.Instance.ScanComplete();
-		//play beep sound
 	}
 
 	void OnMouseDown(){
-		switch (currentState) 
-		{
-		case ItemState.OnBelt:
-				transform.position = ScanningScript.Instance.transform.position;
-				currentState=ItemState.BeingScanned;
-				Invoke("FinishScan", 2.0f);
+		Hand.Instance.PickUpItem(this);
 
-			break;
-		case ItemState.BeingScanned:
-				//Do nothing here
-			break;
-		case ItemState.Scanned:
-				transform.position = EndpointScript.Instance.transform.position;
-				currentState = ItemState.End;
-			break;
-		case ItemState.End:
-			break;
-		default:
-			throw new System.ArgumentOutOfRangeException ();
-		}
+//		switch (currentState) 
+//		{
+//		case ItemState.OnBelt:
+//				transform.position = ScanningScript.Instance.transform.position;
+//				currentState=ItemState.BeingScanned;
+//				Invoke("FinishScan", 0.2f);
+//
+//			break;
+//		case ItemState.BeingScanned:
+//				//Do nothing here
+//			break;
+//		case ItemState.Scanned:
+//				transform.position = EndpointScript.Instance.transform.position;
+//				currentState = ItemState.End;
+//				ConveyorBelt.Instance.SpawnItem();
+//			break;
+//		case ItemState.End:
+//			rigidbody.AddExplosionForce(1000f, transform.position+Vector3.left, 5f);
+//			break;
+//		default:
+//			throw new System.ArgumentOutOfRangeException ();
+//		}
+	}
 
-	
-		
+	void OnMouseUp(){
+		Hand.Instance.DropItem(this);
 	}
 }
