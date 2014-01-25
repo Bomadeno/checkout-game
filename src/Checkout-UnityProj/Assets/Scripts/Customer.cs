@@ -8,7 +8,7 @@ public enum ThemeTalk{weather, joke, politic, sport, health,none};
 public class Talk{
 	public ThemeTalk themeTalk;
 	[HideInInspector] public int level;
-	[HideInInspector]public string text;
+	[HideInInspector] public string text;
 }
 public class Customer : MonoBehaviour {
 	
