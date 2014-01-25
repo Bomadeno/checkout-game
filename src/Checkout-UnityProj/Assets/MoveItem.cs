@@ -2,6 +2,10 @@
 using System.Collections;
 
 public class MoveItem : MonoBehaviour {
+	private bool isScanned;
+	public bool IsScanned{
+		get{return isScanned;}}
+
 	private ItemState currentState;
 	enum ItemState{
 		OnBelt,
@@ -10,32 +14,32 @@ public class MoveItem : MonoBehaviour {
 		End
 	}
 
-	void FinishScan(){
+	void Update(){
+
+	}
+	public void FinishScan(){
+		isScanned= true;
 		currentState=ItemState.Scanned;
 		ScanningScript.Instance.ScanComplete();
 	}
 
 	void OnMouseDown(){
 		Hand.Instance.PickUpItem(this);
-
 //		switch (currentState) 
 //		{
 //		case ItemState.OnBelt:
-//				transform.position = ScanningScript.Instance.transform.position;
-//				currentState=ItemState.BeingScanned;
-//				Invoke("FinishScan", 0.2f);
-//
+//			currentState=ItemState.BeingScanned;
+//			Invoke("FinishScan", 0.2f);
 //			break;
 //		case ItemState.BeingScanned:
-//				//Do nothing here
+//			//Do nothing here
 //			break;
 //		case ItemState.Scanned:
-//				transform.position = EndpointScript.Instance.transform.position;
-//				currentState = ItemState.End;
-//				ConveyorBelt.Instance.SpawnItem();
+//			currentState = ItemState.End;
+//			ConveyorBelt.Instance.SpawnItem();
 //			break;
 //		case ItemState.End:
-//			rigidbody.AddExplosionForce(1000f, transform.position+Vector3.left, 5f);
+//			//Rigidbody.AddExplosionForce(1000f, transform.position+Vector3.left, 5f);
 //			break;
 //		default:
 //			throw new System.ArgumentOutOfRangeException ();
