@@ -111,3 +111,4 @@ UpgradeLog*.XML
 *.sln
 /src/Checkout-UnityProj/Library
 /src/Checkout-UnityProj/Temp
+*.userprefs
