@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class MoveItem : MonoBehaviour {
+
+    public TalkTree talkTree;
+    public float weight;
+
 	private bool isScanned;
 	public bool IsScanned{
 		get{return isScanned;}}
