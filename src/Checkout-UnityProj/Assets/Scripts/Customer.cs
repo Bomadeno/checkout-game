@@ -39,6 +39,11 @@ public class TalkTree{
 
 public class Customer : MonoBehaviour {
 	
+	public static Transform cashPoint;
+	public static Transform endCashPoint;
+	private Transform myTransform;
+	private Transform followTransform;
+	private float timer;
 	public TalkTree talkTree= new TalkTree();
 	[HideInInspector]public List<MoveItem> bascket= new List<MoveItem>();
 	public List<MoveItem> listItemsBascket= new List<MoveItem>();
@@ -46,9 +51,34 @@ public class Customer : MonoBehaviour {
 	[HideInInspector]public List<TalkTree> talks = new List<TalkTree>();
 	// Use this for initialization
 	void Start () {
+		myTransform=transform;
+		timer=0;
 	}
+	void Update()
+	{
+		if (followTransform!=null)
+		{
+			timer+=Time.deltaTime*0.1f;
+			myTransform.position = Vector3.Lerp(myTransform.position,followTransform.position,timer);
+			if (timer>1f)
+			{
+				followTransform=null;
+				timer=0;
+			}
+		}
+	}
+	public void GoToCash()
+	{
+		followTransform=cashPoint;
+	}
+	public void GoAway()
+	{
+		followTransform=endCashPoint;
+	}
+
 	public void Initilization()
 	{
+		GoToCash();
 		FillBasket();
 		FillTalks();
 		FillNextElements();
@@ -83,7 +113,7 @@ public class Customer : MonoBehaviour {
 		{
 			ConveyorBelt.Instance.basket.Add(item.gameObject);
 		}
-		ConveyorBelt.Instance.SpawnBasketItem();
+		ConveyorBelt.Instance.SpawnAllBasketItems();
 	}
 	void FillNextElements()
 	{
@@ -105,10 +135,13 @@ public class Customer : MonoBehaviour {
 		}
 	}
 	
-	
-	// Update is called once per frame
-	void Update () {
-	
+	bool presed=false ;
+	void OnMouseUp()
+	{
+		if (!presed)ShopKeeperSpeach.Instance.StartTalk();
+		presed=true;
 	}
+	
+
 	
 }

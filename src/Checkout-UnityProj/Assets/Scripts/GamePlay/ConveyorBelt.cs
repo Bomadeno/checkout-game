@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class ConveyorBelt : MonoBehaviour {
 	private static ConveyorBelt instance;
-
 	public static ConveyorBelt Instance {
 		get {
 			return instance;
@@ -17,6 +16,7 @@ public class ConveyorBelt : MonoBehaviour {
 	public GameObject[] ItemPrefabs;
 	public ShopKeeperSpeach shopKeeper;
 	[HideInInspector]public List<GameObject> basket;
+	[HideInInspector]public List<GameObject> basketItems;
 	void Start() {
 		instance = this;
 		//SpawnItem();
@@ -26,7 +26,18 @@ public class ConveyorBelt : MonoBehaviour {
 	public void SpawnItem(){
 		GameObject.Instantiate(ItemPrefabs[Random.Range(0, ItemPrefabs.Length)], transform.position, transform.rotation);
 	}
-	public void SpawnBasketItem()
+
+	public void SpawnAllBasketItems(){
+		int counter=0;
+		
+		basketItems= new List<GameObject>();
+		foreach(GameObject item in basket){
+			basketItems.Add (GameObject.Instantiate(item, transform.position+counter*Vector3.up, transform.rotation) as GameObject);
+			counter++;
+		}
+	}
+
+	private void SpawnBasketItem()
 	{
 		if (basket.Count==0)
 		{

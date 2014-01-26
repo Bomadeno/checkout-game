@@ -3,6 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ShopKeeperSpeach : MonoBehaviour {
+	
+	private static ShopKeeperSpeach instance;
+	public static ShopKeeperSpeach Instance { get { return instance;}}
+
+	
+	public  Transform cashPoint;
+	public  Transform endCashPoint;
+	
 	public AudioSource mySource;
 	private Customer curCustumer;
 	private string[] talkTextCached;
@@ -69,14 +77,24 @@ public class ShopKeeperSpeach : MonoBehaviour {
 		}
 	}
 	// Use this for initialization
+	void Awake()
+	{
+		instance=this;
+		
+		Customer.cashPoint=cashPoint;
+		Customer.endCashPoint=endCashPoint;
+	}
 	void Start () {
 		GetNewCustomer();
+		
 	}
 	public void GetNewCustomer()
 	{
+		if (curCustumer!=null) curCustumer.GoAway();
 		curCustumer=PoolScript.Instance.GetNextCustumer();
 		curCustumer.Initilization();
 		showTalkButtons=true;
+		showGrid=false;
 	}
 	// Update is called once per frame
 	void Update () {
@@ -96,13 +114,18 @@ public class ShopKeeperSpeach : MonoBehaviour {
 				selGridInt=-1;
 			}
 		}else{
+			/*
 			if (GUI.Button(new Rect(25,25,100,30),"talk")){
 				GenerateTalkVariations();
 				showGrid=true;
-			}
+			}*/
 		}
     }
-	
+	public void StartTalk()
+	{
+		GenerateTalkVariations();
+		showGrid=true;
+	}
 	IEnumerator TalkToCustumer (int indexTalk)
 	{
 		showTalkButtons=false;
