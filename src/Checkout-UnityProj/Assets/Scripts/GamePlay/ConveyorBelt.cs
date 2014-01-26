@@ -29,6 +29,7 @@ public class ConveyorBelt : MonoBehaviour {
 
 	public void SpawnAllBasketItems(){
 		int counter=0;
+		
 		basketItems= new List<GameObject>();
 		foreach(GameObject item in basket){
 			basketItems.Add (GameObject.Instantiate(item, transform.position+counter*Vector3.up, transform.rotation) as GameObject);
