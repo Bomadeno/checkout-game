@@ -17,6 +17,12 @@ public class DayRecord
 
 public class Score : MonoBehaviour
 {
+	private static Score instance;
+	public static Score Instance { get { return instance;}}
+	void Awake()
+	{
+		instance=this;
+	}
     public List<DayRecord> AllDays = new List<DayRecord>(); 
     public List<CustomerVisitScore> DaysVisits = new List<CustomerVisitScore>();
     public float TimeDayStarted;

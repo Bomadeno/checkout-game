@@ -90,11 +90,19 @@ public class ShopKeeperSpeach : MonoBehaviour {
 	}
 	public void GetNewCustomer()
 	{
-		if (curCustumer!=null) curCustumer.GoAway();
+		if (curCustumer!=null) {
+			curCustumer.GoAway();
+			Score.Instance.LogCustomerExperience(curCustumer);
+		}
 		curCustumer=PoolScript.Instance.GetNextCustumer();
-		curCustumer.Initilization();
-		showTalkButtons=true;
-		showGrid=false;
+		if (curCustumer!=null)
+		{
+			curCustumer.Initilization();
+			showTalkButtons=true;
+			showGrid=false;
+		}else{
+			Debug.Log ("quere is finished");
+		}
 	}
 	// Update is called once per frame
 	void Update () {

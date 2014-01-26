@@ -12,6 +12,7 @@ public class FinishCartButton : MonoBehaviour {
 
 	void OnMouseDown(){
 		Debug.Log("Finished customer");
+		
         PoolScript.Instance.Servesed();
 		DestroyBasketItems();
 		shopKeeper.GetNewCustomer();

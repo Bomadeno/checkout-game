@@ -44,6 +44,7 @@ public class Customer : MonoBehaviour {
 	private Transform myTransform;
 	private Transform followTransform;
 	private float timer;
+	public string customerName="NoName";
 	public TalkTree talkTree= new TalkTree();
 	[HideInInspector]public List<MoveItem> bascket= new List<MoveItem>();
 	public List<MoveItem> listItemsBascket= new List<MoveItem>();
