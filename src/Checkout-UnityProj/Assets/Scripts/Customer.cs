@@ -40,8 +40,8 @@ public class TalkTree{
 public class Customer : MonoBehaviour {
 	
 	public TalkTree talkTree= new TalkTree();
-	[HideInInspector]public List<Item> bascket= new List<Item>();
-	public List<Item> listItemsBascket= new List<Item>();
+	[HideInInspector]public List<MoveItem> bascket= new List<MoveItem>();
+	public List<MoveItem> listItemsBascket= new List<MoveItem>();
 	
 	[HideInInspector]public List<TalkTree> talks = new List<TalkTree>();
 	// Use this for initialization
@@ -79,7 +79,7 @@ public class Customer : MonoBehaviour {
 			}
 		}
 		
-		foreach (Item item in bascket)
+		foreach (MoveItem item in bascket)
 		{
 			ConveyorBelt.Instance.basket.Add(item.gameObject);
 		}
@@ -99,7 +99,7 @@ public class Customer : MonoBehaviour {
 	{
 		talks.Clear();
 		talks.Add(talkTree);
-		foreach (Item item in bascket)
+		foreach (MoveItem item in bascket)
 		{
 			talks.Add(item.talkTree);	
 		}
