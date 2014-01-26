@@ -135,9 +135,11 @@ public class Customer : MonoBehaviour {
 		}
 	}
 	
+	bool presed=false ;
 	void OnMouseUp()
 	{
-		ShopKeeperSpeach.Instance.StartTalk();
+		if (!presed)ShopKeeperSpeach.Instance.StartTalk();
+		presed=true;
 	}
 	
 

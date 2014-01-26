@@ -94,6 +94,7 @@ public class ShopKeeperSpeach : MonoBehaviour {
 		curCustumer=PoolScript.Instance.GetNextCustumer();
 		curCustumer.Initilization();
 		showTalkButtons=true;
+		showGrid=false;
 	}
 	// Update is called once per frame
 	void Update () {
