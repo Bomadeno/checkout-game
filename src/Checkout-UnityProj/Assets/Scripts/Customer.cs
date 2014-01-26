@@ -83,7 +83,7 @@ public class Customer : MonoBehaviour {
 		{
 			ConveyorBelt.Instance.basket.Add(item.gameObject);
 		}
-		ConveyorBelt.Instance.SpawnBasketItem();
+		ConveyorBelt.Instance.SpawnAllBasketItems();
 	}
 	void FillNextElements()
 	{
