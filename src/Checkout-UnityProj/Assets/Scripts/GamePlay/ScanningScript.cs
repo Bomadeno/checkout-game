@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class ScanningScript : MonoBehaviour {
+
 	private static ScanningScript instance;
 	public static ScanningScript Instance {
 		get {
@@ -22,7 +24,8 @@ public class ScanningScript : MonoBehaviour {
 		if(ScannedItem!=null){
 			if(!ScannedItem.IsScanned)
 			{
-				ScannedItem.FinishScan();
+                ScannedItem.FinishScan();
+                ScanComplete();
 				//ConveyorBelt.Instance.SpawnItem();
 				ConveyorBelt.Instance.SpawnBasketItem();
 			}
@@ -30,13 +33,15 @@ public class ScanningScript : MonoBehaviour {
 	}
 
 	public void ScanComplete(){
-		Debug.Log ("BEEEP!");
+		Debug.Log ("Item scanned!");
+        audio.Play();
+
 	}
 
 	MoveItem CheckForHit(){
 		RaycastHit hit;
 		Vector3 center = transform.position;
-		if(Physics.SphereCast(center,0.5f, new Vector3(0.5f,0,0), out hit, 500, 1<<9 )){
+		if(Physics.SphereCast(center,0.5f, transform.up, out hit, 500, 1<<9 )){
 			return hit.transform.gameObject.GetComponent<MoveItem>();
 		}
 		return null;

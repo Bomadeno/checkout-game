@@ -20,7 +20,6 @@ public class MoveItem : MonoBehaviour {
 	public void FinishScan(){
 		isScanned= true;
 		currentState=ItemState.Scanned;
-		ScanningScript.Instance.ScanComplete();
 	}
 
 	void OnMouseDown(){

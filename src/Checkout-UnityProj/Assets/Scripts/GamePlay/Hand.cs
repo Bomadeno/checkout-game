@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Hand : MonoBehaviour {
 	public static Hand instance;
-
+    public GameObject HandRange;
 
 	public static Hand Instance {
 		get {
@@ -22,8 +22,10 @@ public class Hand : MonoBehaviour {
 
 	void Update(){
 		if(heldItem == null){
+            HandRange.SetActive(false);
 			return;
 		}
+        HandRange.SetActive(true);
 		RaycastHit hitInfo;
 		if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 500, 1<<10)){
 			heldItem.transform.position=hitInfo.point;
