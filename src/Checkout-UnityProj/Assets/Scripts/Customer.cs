@@ -39,6 +39,8 @@ public class TalkTree{
 
 public class Customer : MonoBehaviour {
 	
+	public Texture2D faceTexture;
+	public Renderer face;
 	public static Transform cashPoint;
 	public static Transform endCashPoint;
 	private Transform myTransform;
@@ -52,6 +54,8 @@ public class Customer : MonoBehaviour {
 	[HideInInspector]public List<TalkTree> talks = new List<TalkTree>();
 	// Use this for initialization
 	void Start () {
+		//renderer.sharedMaterial=faceTexture;
+		if (faceTexture!=null)face.material.SetTexture("_MainTex", faceTexture);
 		myTransform=transform;
 		timer=0;
 	}

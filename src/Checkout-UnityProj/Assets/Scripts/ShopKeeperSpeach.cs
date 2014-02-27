@@ -90,6 +90,7 @@ public class ShopKeeperSpeach : MonoBehaviour {
 	}
 	public void GetNewCustomer()
 	{
+		nodes=new List<TalkNode>();
 		if (curCustumer!=null) {
 			curCustumer.GoAway();
 			Score.Instance.LogCustomerExperience(curCustumer);
@@ -115,7 +116,7 @@ public class ShopKeeperSpeach : MonoBehaviour {
 		if (!showTalkButtons) return;
 		if (showGrid)
 		{
-			selGridInt = GUI.SelectionGrid(new Rect(25, 25, 100, 300), selGridInt, talkTextCached, 1);
+			selGridInt = GUI.SelectionGrid(new Rect(25, 25, 300, 300), selGridInt, talkTextCached, 1);
 			if (selGridInt!=-1)
 			{
 				StartCoroutine(TalkToCustumer(selGridInt));

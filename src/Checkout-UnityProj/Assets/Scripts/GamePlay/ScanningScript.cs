@@ -26,6 +26,7 @@ public class ScanningScript : MonoBehaviour {
 			{
                 ScannedItem.FinishScan();
                 ScanComplete();
+				FinishCartButton.Instance.renderer.sharedMaterial=FinishCartButton.Instance.mats[1];
 				//ConveyorBelt.Instance.SpawnItem();
 				//ConveyorBelt.Instance.SpawnBasketItem();
 			}
